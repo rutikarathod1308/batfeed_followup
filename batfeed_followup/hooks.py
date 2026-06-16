@@ -27,7 +27,10 @@ app_license = "mit"
 # include js, css files in header of desk.html
 # app_include_css = "/assets/batfeed_followup/css/batfeed_followup.css"
 # app_include_js = "/assets/batfeed_followup/js/batfeed_followup.js"
-
+app_include_js = [
+    "/assets/batfeed_followup/js/reminders.js",
+    "/assets/batfeed_followup/js/reminder_global.js"
+]
 # include js, css files in header of web template
 # web_include_css = "/assets/batfeed_followup/css/batfeed_followup.css"
 # web_include_js = "/assets/batfeed_followup/js/batfeed_followup.js"
@@ -41,9 +44,16 @@ app_license = "mit"
 
 # include js in page
 # page_js = {"page" : "public/js/file.js"}
-
+import frappe.automation.doctype.reminder.reminder as reminder
+import batfeed_followup.override.py.reminder
+reminder.send_reminders = batfeed_followup.override.py.reminder.custom_send_reminders
 # include js in doctype views
 # doctype_js = {"doctype" : "public/js/doctype.js"}
+doctype_js = {
+  
+    "*": "batfeed_followup/public/js/reminders.js"
+
+}
 # doctype_list_js = {"doctype" : "public/js/doctype_list.js"}
 # doctype_tree_js = {"doctype" : "public/js/doctype_tree.js"}
 # doctype_calendar_js = {"doctype" : "public/js/doctype_calendar.js"}
@@ -124,6 +134,13 @@ app_license = "mit"
 # has_permission = {
 # 	"Event": "frappe.desk.doctype.event.event.has_permission",
 # }
+permission_query_conditions = {
+	"Reminder": "batfeed_followup.override.py.reminder.get_permission_query_conditions"
+}
+
+has_permission = {
+	"Reminder": "batfeed_followup.override.py.reminder.has_reminder_permission"
+}
 
 # DocType Class
 # ---------------
@@ -132,6 +149,11 @@ app_license = "mit"
 # override_doctype_class = {
 # 	"ToDo": "custom_app.overrides.CustomToDo"
 # }
+override_doctype_class = {
+
+    "Reminder": "batfeed_followup.override.py.reminder.CustomReminder"
+
+}
 
 # Document Events
 # ---------------
@@ -147,7 +169,15 @@ app_license = "mit"
 
 # Scheduled Tasks
 # ---------------
-
+scheduler_events = {
+    
+    "cron": {
+     
+        "*/15 * * * *": [
+                "batfeed_followup.public.py.attendance.check_missing_biometric"
+            ]
+    }
+}
 # scheduler_events = {
 # 	"all": [
 # 		"batfeed_followup.tasks.all"
@@ -247,3 +277,19 @@ app_license = "mit"
 # List of apps whose translatable strings should be excluded from this app's translations.
 # ignore_translatable_strings_from = []
 
+fixtures = [
+    {"dt":"Custom Field","filters":[
+        [
+            "module","in",[
+            "Batfeed Followup"
+            ],
+        ]
+    ]},
+     {"dt":"Property Setter","filters":[
+        [
+            "module","in",[
+            "Batfeed Followup"
+            ],
+        ]
+    ]}
+]
