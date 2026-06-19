@@ -167,14 +167,14 @@ class CustomReminder(Document):
 
 			user_doc = frappe.get_doc("User", user)
 
-			if not user_doc.mobile_no:
-				self.create_reminder_log(
-				user=user,
-				channel="WhatsApp",
-				status="Failed",
-				response_message="Mobile number not found"
-				)
-				return
+			# if not user_doc.mobile_no:
+			# 	self.create_reminder_log(
+			# 	user=user,
+			# 	channel="WhatsApp",
+			# 	status="Failed",
+			# 	response_message="Mobile number not found"
+			# 	)
+			# 	return
 
 		
 

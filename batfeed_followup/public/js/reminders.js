@@ -143,7 +143,7 @@ frappe.ui.ReminderManager = class {
 	create_reminder() {
 
 		frappe.xcall(
-			"batfeed.override.py.reminder.create_new_reminder",
+			"batfeed_followup.override.py.reminder.create_new_reminder",
 			{
 				remind_at: this.dialog.get_value("remind_at"),
 

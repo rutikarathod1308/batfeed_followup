@@ -169,15 +169,8 @@ override_doctype_class = {
 
 # Scheduled Tasks
 # ---------------
-scheduler_events = {
-    
-    "cron": {
-     
-        "*/15 * * * *": [
-                "batfeed_followup.public.py.attendance.check_missing_biometric"
-            ]
-    }
-}
+
+
 # scheduler_events = {
 # 	"all": [
 # 		"batfeed_followup.tasks.all"
