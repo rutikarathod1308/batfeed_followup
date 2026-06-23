@@ -169,7 +169,11 @@ override_doctype_class = {
 
 # Scheduled Tasks
 # ---------------
-
+scheduler_events = {
+    "daily": [
+        "batfeed_followup.public.py.purchase_order.send_overdue_purchase_order_reminders"
+    ]
+}
 
 # scheduler_events = {
 # 	"all": [
