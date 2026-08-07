@@ -17,10 +17,9 @@ def send_overdue_purchase_order_reminders():
         fields=["name"]
     )
 
-    # frappe.log_error(f"Overdue Purchase Orders: {po_list}", "Overdue Purchase Orders")
 
     for po in po_list:
-        send_whatsapp_template(po.name, "po_pending", today)
+        # send_whatsapp_template(po.name, "po_pending", today)
         send_email_template(po.name, "po_pending", today)
 
 
@@ -35,11 +34,10 @@ def send_whatsapp_template(po_name, template_name, today):
 
         po_doc = frappe.get_doc("Purchase Order", po_name)
 
-        # Table MultiSelect / Child Table users fetch
+        
         users = []
         for row in po_doc.custom_notification_users:
-            # IMPORTANT:
-            # row.user ne tamara actual child table na fieldname thi replace karjo jo alag hoy
+            
             if getattr(row, "user", None):
                 users.append(row.user)
 
@@ -75,7 +73,7 @@ def send_whatsapp_template(po_name, template_name, today):
                 )
                 continue
 
-            # Remove country code if already entered in number
+            
             if number.startswith(f"+{country_code}"):
                 number = number[len(country_code) + 1:]
             elif number.startswith(country_code):
@@ -155,7 +153,7 @@ def send_email_template(po_name, template_name, today):
     try:
         po_doc = frappe.get_doc("Purchase Order", po_name)
 
-        # Table MultiSelect / Child Table users fetch
+        
         users = []
         for row in po_doc.custom_notification_users:
             if getattr(row, "user", None):
